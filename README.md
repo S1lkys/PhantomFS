@@ -1,6 +1,7 @@
 # PhantomFS
 
-ProjFS provider for EDR evasion research. Projects files where the content depends on which process reads them. Payload is stored AES-256-CBC encrypted on disk, decrypted only in memory at runtime.
+ProjFS provider. Projects files where the content depends on which process reads them. Payload is stored AES-256-CBC encrypted on disk, decrypted only in memory at runtime. This shouldnt bypass any EDR as the payload will be written to disk when allowed processes try to read it. Everything else gets access denied. 
+This might piss off some analysts as their tools wont read it or simply load a decoy. But you can easily see thats it's a ProjFS using a reparse point.
 
 ## Workflow
 
@@ -14,8 +15,8 @@ PhantomFS.exe C:\Staging -file mimikatz.enc -key 7ed5a44412447be587b2ca2e4eacb17
 ```
 
 Result: `C:\Staging\calc.exe` appears in the filesystem.
-- `powershell.exe` reading it gets decrypted mimikatz bytes
-- Everything else (Defender, CrowdStrike, ...) gets real calc.exe bytes
+- `cmd.exe` reading it gets decrypted mimikatz bytes
+- Everything else gets real calc.exe bytes pluss Null padding
 - Delete/rename attempts from non-allowed processes are blocked
 
 ## Build
@@ -70,3 +71,6 @@ Without it, the second reader would get whatever the first reader received.
 - `PrjFlt` minifilter at altitude 189800 (`fltmc.exe`)
 - `Microsoft-Windows-ProjFS` ETW provider
 - Frequent file state transitions (hydrated -> placeholder)
+
+Inspiration:
+- https://www.huntress.com/blog/windows-projected-file-system-mechanics
