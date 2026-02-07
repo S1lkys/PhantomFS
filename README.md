@@ -8,6 +8,9 @@ ProjFS provider for EDR evasion research. Projects files where the content depen
 1) Generate key:     PhantomFS.exe -keygen
 2) Encrypt payload:  PhantomFS.exe -encrypt mimikatz.exe -key <key> -out mimikatz.enc
 3) Serve:            PhantomFS.exe C:\Staging -file mimikatz.enc -key <key> -decoy C:\Windows\System32\calc.exe
+
+Example:
+PhantomFS.exe C:\Staging -file mimikatz.enc -key 7ed5a44412447be587b2ca2e4eacb17d41c869360663ae0fea1d0caca159483c -decoy C:\Windows\System32\calc.exe
 ```
 
 Result: `C:\Staging\calc.exe` appears in the filesystem.
